@@ -19,7 +19,7 @@
                     <h5>Contacto</h5>
                     <p>
                         <i class="bi bi-envelope"></i> info@crafted.com<br>
-                        <i class="bi bi-telephone"></i> +51 123 456 789
+                        <i class="bi bi-telephone"></i> +51 991 829 980
                     </p>
                 </div>
             </div>
