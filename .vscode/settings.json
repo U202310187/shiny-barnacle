@@ -1,0 +1,6 @@
+{
+    "php.debug.executablePath": "/Applications/XAMPP/xamppfiles/bin/php",
+    "php.suggest.basic": true,
+    "php.validate.enable": true,
+    "php.validate.executablePath": "/Applications/XAMPP/xamppfiles/bin/php"
+}

@@ -1,28 +1,75 @@
-<?php include("db.php")?> <!--Importa conexion DB-->
+<?php
+include('config/db.php');
+include('includes/header.php');
+?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
+<!-- Hero Banner -->
+<div class="bg-light p-5 rounded-lg mb-5">
+    <div class="container">
+        <h1 class="display-4">Descubre tu lado creativo con Crafted</h1>
+        <p class="lead">Plataforma especializada en materiales para pintura, dibujo, escultura, fotografía y más.</p>
+        <hr class="my-4">
+        <p>Únete hoy y recibe recomendaciones personalizadas basadas en tus intereses creativos.</p>
+        <?php if(!isset($_SESSION['id_usuario'])): ?>
+        <a class="btn btn-primary btn-lg" href="registro.php">Registrarse</a>
+        <a class="btn btn-outline-primary btn-lg" href="login.php">Iniciar Sesión</a>
+        <?php else: ?>
+        <a class="btn btn-primary btn-lg" href="cajas-tematicas.php">Ver Cajas Temáticas</a>
+        <?php endif; ?>
+    </div>
+</div>
 
-    <!---- Bootstrap’s compiled CSS ---->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    <!-- Mis estilos personalizados van después del CSS de Bootstrap -->
-</head>
-<body>
-
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container">
-            <a href="index.php" class="navbar-brand">Inicio</a>
+<!-- Características Principales -->
+<div class="row mb-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-box-seam text-primary" style="font-size: 3rem;"></i>
+                <h3 class="card-title">Cajas Temáticas</h3>
+                <p class="card-text">Recibe mensualmente kits curados con materiales de alta calidad y guías paso a paso.</p>
+            </div>
         </div>
-    </nav>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-palette text-primary" style="font-size: 3rem;"></i>
+                <h3 class="card-title">Productos Especializados</h3>
+                <p class="card-text">Catálogo amplio organizado por disciplinas creativas y niveles de experiencia.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-people text-primary" style="font-size: 3rem;"></i>
+                <h3 class="card-title">Experiencia Personalizada</h3>
+                <p class="card-text">Recomendaciones adaptadas a tu estilo creativo y nivel de experiencia.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <h1>HOLA MUNDO</h1>
+<!-- Estilos Creativos -->
+<h2 class="text-center mb-4">Disciplinas Creativas</h2>
+<div class="row">
+    <?php
+    $estilos = ["Pintura", "Escultura", "Fotografía", "Acuarela", "Dibujo"];
+    foreach($estilos as $estilo):
+    ?>
+    <div class="col-md-2 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title"><?php echo $estilo; ?></h5>
+                <?php if(isset($_SESSION['id_usuario'])): ?>
+                <a href="productos.php?estilo=<?php echo urlencode($estilo); ?>" class="btn btn-sm btn-outline-primary">Ver productos</a>
+                <?php else: ?>
+                <a href="registro.php" class="btn btn-sm btn-outline-primary">Regístrate para ver</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+</div>
 
-    <!---- Bootstrap’s compiled JavaScript ---->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <!-- Mis scripts personalizados van después de Bootstrap -->
-</body>
-</html>
+<?php include('includes/footer.php'); ?>
