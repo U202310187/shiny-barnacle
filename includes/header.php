@@ -10,6 +10,8 @@ if (session_status() == PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crafted - Materiales para hobbies creativos</title>
+    <!-- Favicon -->
+    <link rel="icon" href="assets/img/logo/logocuadrado.png" type="image/png">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Estilos personalizados -->
@@ -19,7 +21,10 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="index.php">Crafted</a>
+        <a class="navbar-brand" href="index.php">
+        <img src="assets/img/logo/logocuadrado.png" alt="Logo Crafted" height="30" class="d-inline-block align-text-top">
+        Crafted
+        </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
