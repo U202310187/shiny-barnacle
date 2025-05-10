@@ -3,6 +3,13 @@ include('config/db.php');
 include('includes/header.php');
 ?>
 
+<!-- Mostrar mensaje de cierre de sesión -->
+<?php if (isset($_GET['logout']) && $_GET['logout'] == 1): ?>
+    <div class="alert alert-success text-center">
+        Has cerrado sesión correctamente.
+    </div>
+<?php endif; ?>
+
 <!-- Hero Banner -->
 <div class="bg-light p-5 rounded-lg mb-5">
     <div class="container">

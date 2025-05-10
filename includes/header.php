@@ -36,7 +36,7 @@ if (session_status() == PHP_SESSION_NONE) {
                         <a class="nav-link" href="productos.php">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="suscripciones.php">Suscripciones</a>
+                        <a class="nav-link" href="suscripcion.php">Suscripciones</a>
                     </li>
                     <?php endif; ?>
                 </ul>
