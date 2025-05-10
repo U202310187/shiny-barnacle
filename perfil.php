@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 include("config/db.php");
 include("includes/functions.php");
@@ -15,15 +18,15 @@ $success = "";
 
 // Obtener datos del usuario
 $sql_usuario = "SELECT * FROM usuarios WHERE id_usuario = $id_usuario";
-$result_usuario = mysqli_query($conexion, $sql_usuario);
+$result_usuario = mysqli_query($conn, $sql_usuario);
 $usuario = mysqli_fetch_assoc($result_usuario);
 
 // Obtener estilos del usuario
-$estilos_usuario = obtenerEstilosUsuario($id_usuario, $conexion);
+$estilos_usuario = obtenerEstilosUsuario($id_usuario, $conn);
 
 // Obtener todos los estilos disponibles
 $sql_todos_estilos = "SELECT * FROM tipos_estilos";
-$result_todos_estilos = mysqli_query($conexion, $sql_todos_estilos);
+$result_todos_estilos = mysqli_query($conn, $sql_todos_estilos);
 $todos_estilos = array();
 while($estilo = mysqli_fetch_assoc($result_todos_estilos)) {
     $todos_estilos[] = $estilo;
@@ -31,14 +34,14 @@ while($estilo = mysqli_fetch_assoc($result_todos_estilos)) {
 
 // Actualizar perfil
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) {
-    $nombre = limpiarDatos($_POST['nombre'], $conexion);
-    $apellido = limpiarDatos($_POST['apellido'], $conexion);
-    $email = limpiarDatos($_POST['email'], $conexion);
-    $experiencia = limpiarDatos($_POST['experiencia'], $conexion);
+    $nombre = limpiarDatos($_POST['nombre'], $conn);
+    $apellido = limpiarDatos($_POST['apellido'], $conn);
+    $email = limpiarDatos($_POST['email'], $conn);
+    $experiencia = limpiarDatos($_POST['experiencia'], $conn);
     
     // Verificar si el email ya existe y no es el del usuario actual
     $check_email = "SELECT * FROM usuarios WHERE email = '$email' AND id_usuario != $id_usuario";
-    $result_email = mysqli_query($conexion, $check_email);
+    $result_email = mysqli_query($conn, $check_email);
     
     if(mysqli_num_rows($result_email) > 0) {
         $error = "Este email ya está registrado por otro usuario";
@@ -51,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                 experiencia = '$experiencia' 
                 WHERE id_usuario = $id_usuario";
                 
-        if(mysqli_query($conexion, $sql)) {
+        if(mysqli_query($conn, $sql)) {
             // Actualizar datos de sesión
             $_SESSION['nombre'] = $nombre;
             $_SESSION['apellido'] = $apellido;
@@ -61,10 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
             $success = "Perfil actualizado correctamente";
             
             // Recargar datos del usuario
-            $result_usuario = mysqli_query($conexion, $sql_usuario);
+            $result_usuario = mysqli_query($conn, $sql_usuario);
             $usuario = mysqli_fetch_assoc($result_usuario);
         } else {
-            $error = "Error al actualizar perfil: " . mysqli_error($conexion);
+            $error = "Error al actualizar perfil: " . mysqli_error($conn);
         }
     }
 }
@@ -76,19 +79,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_estilos']))
         
         // Eliminar estilos previos
         $eliminar = "DELETE FROM estilos_usuarios WHERE id_usuario = $id_usuario";
-        mysqli_query($conexion, $eliminar);
+        mysqli_query($conn, $eliminar);
         
         // Insertar nuevos estilos
         foreach($estilos_seleccionados as $id_estilo) {
             $id_estilo = intval($id_estilo);
             $sql = "INSERT INTO estilos_usuarios (id_usuario, id_estilo) VALUES ($id_usuario, $id_estilo)";
-            mysqli_query($conexion, $sql);
+            mysqli_query($conn, $sql);
         }
         
         $success = "Estilos actualizados correctamente";
         
         // Recargar estilos del usuario
-        $estilos_usuario = obtenerEstilosUsuario($id_usuario, $conexion);
+        $estilos_usuario = obtenerEstilosUsuario($id_usuario, $conn);
     } else {
         $error = "Debes seleccionar al menos un estilo creativo";
     }
@@ -196,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_estilos']))
                         <h5>Últimas Compras</h5>
                         <?php
                         $sql_compras = "SELECT * FROM compras WHERE id_usuario = $id_usuario ORDER BY fecha DESC LIMIT 3";
-                        $result_compras = mysqli_query($conexion, $sql_compras);
+                        $result_compras = mysqli_query($conn, $sql_compras);
                         
                         if(mysqli_num_rows($result_compras) > 0):
                         ?>
@@ -215,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_estilos']))
                         <h5>Recomendaciones Recientes</h5>
                         <?php
                         $sql_recs = "SELECT * FROM historial_recomendaciones WHERE id_usuario = $id_usuario ORDER BY fecha DESC LIMIT 3";
-                        $result_recs = mysqli_query($conexion, $sql_recs);
+                        $result_recs = mysqli_query($conn, $sql_recs);
                         
                         if(mysqli_num_rows($result_recs) > 0):
                         ?>

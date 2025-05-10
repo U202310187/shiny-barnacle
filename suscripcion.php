@@ -15,7 +15,7 @@ $sql_suscripcion = "SELECT * FROM suscripciones
                    WHERE id_usuario = $id_usuario 
                    AND (status = 'Activa' OR status = 'Pausada')
                    ORDER BY fecha_ini DESC LIMIT 1";
-$result_suscripcion = mysqli_query($conexion, $sql_suscripcion);
+$result_suscripcion = mysqli_query($conn, $sql_suscripcion);
 $tiene_suscripcion = mysqli_num_rows($result_suscripcion) > 0;
 
 // Procesar nueva suscripción si se envía el formulario
@@ -36,13 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nueva_suscripcion'])) 
     $sql_nueva = "INSERT INTO suscripciones (id_usuario, fecha_ini, fecha_fin, status, tipo) 
                  VALUES ($id_usuario, '$fecha_ini', '$fecha_fin', 'Activa', '$tipo')";
     
-    if (mysqli_query($conexion, $sql_nueva)) {
+    if (mysqli_query($conn, $sql_nueva)) {
         $mensaje = "¡Tu suscripción ha sido activada con éxito!";
         // Recargar información de suscripción
-        $result_suscripcion = mysqli_query($conexion, $sql_suscripcion);
+        $result_suscripcion = mysqli_query($conn, $sql_suscripcion);
         $tiene_suscripcion = true;
     } else {
-        $error = "Error al activar la suscripción: " . mysqli_error($conexion);
+        $error = "Error al activar la suscripción: " . mysqli_error($conn);
     }
 }
 
@@ -54,13 +54,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_status'])) 
     $sql_update = "UPDATE suscripciones SET status = '$nuevo_status' 
                   WHERE id_suscripcion = $id_suscripcion AND id_usuario = $id_usuario";
     
-    if (mysqli_query($conexion, $sql_update)) {
+    if (mysqli_query($conn, $sql_update)) {
         $mensaje = "Estado de suscripción actualizado a: $nuevo_status";
         // Recargar información de suscripción
-        $result_suscripcion = mysqli_query($conexion, $sql_suscripcion);
+        $result_suscripcion = mysqli_query($conn, $sql_suscripcion);
         $tiene_suscripcion = mysqli_num_rows($result_suscripcion) > 0;
     } else {
-        $error = "Error al actualizar estado: " . mysqli_error($conexion);
+        $error = "Error al actualizar estado: " . mysqli_error($conn);
     }
 }
 ?>
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_status'])) 
     <?php include("includes/header.php"); ?>
     
     <div class="container py-5">
-        <h1 class="mb-4 text-center">Mis Suscripciones</h1>
+        <h1 class="mb-4 text-center">Mi Suscripcion</h1>
         
         <?php if(isset($mensaje)): ?>
             <div class="alert alert-success" role="alert">
@@ -208,8 +208,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_status'])) 
                                       WHERE e.id_usuario = $id_usuario";
                         $sql_exp = "SELECT experiencia FROM usuarios WHERE id_usuario = $id_usuario";
                         
-                        $result_estilo = mysqli_query($conexion, $sql_estilo);
-                        $result_exp = mysqli_query($conexion, $sql_exp);
+                        $result_estilo = mysqli_query($conn, $sql_estilo);
+                        $result_exp = mysqli_query($conn, $sql_exp);
                         
                         if (mysqli_num_rows($result_estilo) > 0 && mysqli_num_rows($result_exp) > 0) {
                             $estilo = mysqli_fetch_assoc($result_estilo)['nombre_estilo'];
@@ -219,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_status'])) 
                             $sql_caja = "SELECT * FROM cajas_tematicas 
                                         WHERE tema = '$estilo' AND experiencia = '$experiencia' 
                                         LIMIT 1";
-                            $result_caja = mysqli_query($conexion, $sql_caja);
+                            $result_caja = mysqli_query($conn, $sql_caja);
                             
                             if (mysqli_num_rows($result_caja) > 0) {
                                 $caja = mysqli_fetch_assoc($result_caja);
