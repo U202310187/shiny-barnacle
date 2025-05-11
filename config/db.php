@@ -1,9 +1,9 @@
 <?php
 // Configuración de la conexión
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "crafted";
+$host = "20.57.118.228";
+$user = "panconchorizo7";
+$password = "adrian";
+$database = "Crafted";
 
 // Crear conexión
 $conn = new mysqli($host, $user, $password, $database);
