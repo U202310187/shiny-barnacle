@@ -13,15 +13,15 @@ $id_usuario = $_SESSION['id_usuario'];
 
 // Verificar si existe un carrito activo para el usuario
 $sql_carrito = "SELECT id_carrito FROM carritos_compras WHERE id_usuario = $id_usuario AND status = 'Activo'";
-$result_carrito = mysqli_query($conn, $sql_carrito); // Cambiado $conexion por $conn
+$result_carrito = mysqli_query($conn, $sql_carrito); 
 
 if (mysqli_num_rows($result_carrito) == 0) {
     // Crear nuevo carrito si no existe uno activo
     $fecha_actual = date("Y-m-d");
     $sql_crear_carrito = "INSERT INTO carritos_compras (id_usuario, fecha_creacion, status) 
                          VALUES ($id_usuario, '$fecha_actual', 'Activo')";
-    mysqli_query($conn, $sql_crear_carrito); // Cambiado $conexion por $conn
-    $id_carrito = mysqli_insert_id($conn); // Cambiado $conexion por $conn
+    mysqli_query($conn, $sql_crear_carrito); 
+    $id_carrito = mysqli_insert_id($conn); 
 } else {
     $row_carrito = mysqli_fetch_assoc($result_carrito);
     $id_carrito = $row_carrito['id_carrito'];
@@ -58,12 +58,12 @@ if (isset($_GET['accion'])) {
         
         // Crear nuevo item para el carrito
         $sql_nuevo_item = "INSERT INTO items_carritos (id_carrito) VALUES ($id_carrito)";
-        mysqli_query($conn, $sql_nuevo_item); // Cambiado $conexion por $conn
-        $id_item = mysqli_insert_id($conn); // Cambiado $conexion por $conn
+        mysqli_query($conn, $sql_nuevo_item); 
+        $id_item = mysqli_insert_id($conn); 
         
         // Asociar producto con el item
         $sql_update_producto = "UPDATE productos SET id_item = $id_item WHERE id_producto = $id_producto";
-        mysqli_query($conn, $sql_update_producto); // Cambiado $conexion por $conn
+        mysqli_query($conn, $sql_update_producto); 
         
         header("Location: carrito.php?msg=agregado");
         exit();
@@ -73,11 +73,11 @@ if (isset($_GET['accion'])) {
         
         // Primero desasociar el producto del item
         $sql_desasociar = "UPDATE productos SET id_item = 0 WHERE id_item = $id_item";
-        mysqli_query($conn, $sql_desasociar); // Cambiado $conexion por $conn
+        mysqli_query($conn, $sql_desasociar);
         
         // Luego eliminar el item
         $sql_eliminar = "DELETE FROM items_carritos WHERE id_item = $id_item";
-        mysqli_query($conn, $sql_eliminar); // Cambiado $conexion por $conn
+        mysqli_query($conn, $sql_eliminar);
         
         header("Location: carrito.php?msg=eliminado");
         exit();
@@ -91,7 +91,7 @@ if (isset($_GET['accion'])) {
                      FROM productos p 
                      JOIN items_carritos i ON p.id_item = i.id_item 
                      WHERE i.id_carrito = $id_carrito";
-        $result_total = mysqli_query($conn, $sql_total); // Cambiado $conexion por $conn
+        $result_total = mysqli_query($conn, $sql_total);
         $row_total = mysqli_fetch_assoc($result_total);
         $total = $row_total['total'];
         
@@ -101,15 +101,15 @@ if (isset($_GET['accion'])) {
             $metodo_pago = isset($_POST['metodo_pago']) ? $_POST['metodo_pago'] : 'Tarjeta';
             $sql_compra = "INSERT INTO compras (id_usuario, fecha, total, metodo_pago) 
                          VALUES ($id_usuario, '$fecha_actual', $total, '$metodo_pago')";
-            mysqli_query($conn, $sql_compra); // Cambiado $conexion por $conn
-            $id_compra = mysqli_insert_id($conn); // Cambiado $conexion por $conn
+            mysqli_query($conn, $sql_compra); 
+            $id_compra = mysqli_insert_id($conn); 
             
             // Obtener productos del carrito
             $sql_productos = "SELECT p.id_producto, p.precio 
                             FROM productos p 
                             JOIN items_carritos i ON p.id_item = i.id_item 
                             WHERE i.id_carrito = $id_carrito";
-            $result_productos = mysqli_query($conn, $sql_productos); // Cambiado $conexion por $conn
+            $result_productos = mysqli_query($conn, $sql_productos); 
             
             // Crear detalle de compra para cada producto
             while ($producto = mysqli_fetch_assoc($result_productos)) {
@@ -118,12 +118,12 @@ if (isset($_GET['accion'])) {
                 
                 $sql_detalle = "INSERT INTO detalles_compras (id_compra, id_producto, cantidad, precio_unitario) 
                              VALUES ($id_compra, $id_producto, 1, $precio)";
-                mysqli_query($conn, $sql_detalle); // Cambiado $conexion por $conn
+                mysqli_query($conn, $sql_detalle); 
             }
             
             // Cambiar estado del carrito
             $sql_update_carrito = "UPDATE carritos_compras SET status = 'Pendiente' WHERE id_carrito = $id_carrito";
-            mysqli_query($conn, $sql_update_carrito); // Cambiado $conexion por $conn
+            mysqli_query($conn, $sql_update_carrito); 
             
             header("Location: carrito.php?msg=compra_completada&id_compra=$id_compra");
             exit();
@@ -136,11 +136,11 @@ $sql_productos = "SELECT p.*, i.id_item
                 FROM productos p 
                 JOIN items_carritos i ON p.id_item = i.id_item 
                 WHERE i.id_carrito = $id_carrito";
-$result_productos = mysqli_query($conn, $sql_productos); // Cambiado $conexion por $conn
+$result_productos = mysqli_query($conn, $sql_productos); 
 
 // Calcular total
 $sql_total = "SELECT SUM(precio) as total FROM productos WHERE id_item IN (SELECT id_item FROM items_carritos WHERE id_carrito = $id_carrito)";
-$result_total = mysqli_query($conn, $sql_total); // Cambiado $conexion por $conn
+$result_total = mysqli_query($conn, $sql_total); 
 $row_total = mysqli_fetch_assoc($result_total);
 $total = $row_total['total'] ?? 0;
 

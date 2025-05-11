@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = limpiarDatos($_POST['password']);
     
     $sql = "SELECT * FROM usuarios WHERE email = '$email' AND password = '$password'";
-    $resultado = mysqli_query($conexion, $sql);
+    $resultado = mysqli_query($conn, $sql);
     
     if (mysqli_num_rows($resultado) == 1) {
         $usuario = mysqli_fetch_assoc($resultado);
