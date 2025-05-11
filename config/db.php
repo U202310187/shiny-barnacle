@@ -1,8 +1,16 @@
 <?php
 // Configuración de la conexión
-$host = "20.57.118.228";
-$user = "panconchorizo7";
-$password = "adrian";
+if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.0.1') {
+    // Configuración local
+    $host = "localhost";
+    $user = "root";
+    $password = "";
+} else {
+    // Configuración en la nube
+    $host = "20.57.118.228";
+    $user = "panconchorizo7";
+    $password = "adrian";
+}
 $database = "Crafted";
 
 // Crear conexión
